@@ -27,25 +27,25 @@ public class PagamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PagamentoDto> getPagamentoById(@PathVariable @NotNull Long id){
+    public ResponseEntity<PagamentoDto> getPagamentoById(@PathVariable @NotNull Long id) {
         PagamentoDto dto = pagamentoService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
     public ResponseEntity<PagamentoDto> create(@Valid @RequestBody PagamentoDto pagamentoDto, UriComponentsBuilder uriBuilder) {
-        pagamentoService.insertPagamento(pagamentoDto);
-        URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamentoDto.getId()).toUri();
-        return ResponseEntity.created(endereco).body(pagamentoDto);
+        PagamentoDto dto = pagamentoService.insertPagamento(pagamentoDto);
+        URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(endereco).body(dto);
     }
 
-    @PutMapping("/pagamentos/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PagamentoDto> update(@PathVariable @NotNull Long id, @Valid @RequestBody PagamentoDto pagamentoDto) {
-        pagamentoService.updatePagamento(id, pagamentoDto);
-        return ResponseEntity.ok(pagamentoDto);
+        PagamentoDto dto = pagamentoService.updatePagamento(id, pagamentoDto);
+        return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/pagamentos/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @NotNull Long id) {
         pagamentoService.deleteById(id);
         return ResponseEntity.noContent().build();

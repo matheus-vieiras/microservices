@@ -2,6 +2,7 @@ package br.com.alurafood.pagamentos.service;
 
 import br.com.alurafood.pagamentos.dto.PagamentoDto;
 import br.com.alurafood.pagamentos.model.Pagamento;
+import br.com.alurafood.pagamentos.model.Status;
 import br.com.alurafood.pagamentos.repository.PagamentoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,19 @@ public class PagamentoService {
         return modelMapper.map(pagamento, PagamentoDto.class);
     }
 
-    public void insertPagamento(PagamentoDto pagamentoDto) {
+    public PagamentoDto insertPagamento(PagamentoDto pagamentoDto) {
         Pagamento pagamento = modelMapper.map(pagamentoDto, Pagamento.class);
-        pagamento.setStatus(pagamentoDto.getStatus());
+        pagamento.setStatus(Status.CRIADO);
         repository.save(pagamento);
+
+        return modelMapper.map(pagamento, PagamentoDto.class);
     }
 
-    public void updatePagamento(Long id, PagamentoDto pagamentoDto) {
+    public PagamentoDto updatePagamento(Long id, PagamentoDto pagamentoDto) {
         Pagamento pagamento = modelMapper.map(pagamentoDto, Pagamento.class);
         pagamento.setId(id);
-        repository.save(pagamento);
+        pagamento = repository.save(pagamento);
+        return modelMapper.map(pagamento, PagamentoDto.class);
     }
 
     public void deleteById(Long id) {
